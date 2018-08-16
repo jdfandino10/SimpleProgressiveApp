@@ -1,5 +1,5 @@
 # SimpleProgressiveApp
-A simple progressive app made for the course MISO4208. Hosted on [firebase](https://simpleprogressiveappmiso4208.firebaseapp.com/).
+A simple progressive app made for the course MISO4208. [Hosted on firebase](https://simpleprogressiveappmiso4208.firebaseapp.com/).
 
 # Lighthouse
 ## Before
