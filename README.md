@@ -3,6 +3,6 @@ A simple progressive app made for the course MISO4208
 
 # Lighthouse
 ## Before
-![Lighthouse initial results](https://lh3.googleusercontent.com/Wrrf6a512wl-dPM1O4XAeXhb77ES4SsMMhb7r-ZyN8nE_jdEgByLbZ6nv-3kRniHBDr0HOSeZR_9SxTyhkwL=w1920-h876-rw)
+![Lighthouse initial results](https://raw.githubusercontent.com/jdfandino10/SimpleProgressiveApp/master/prueba_progressive_antes.PNG)
 ## After
-![Lighthouse final results](https://lh3.google.com/u/0/d/1iUEnpkTL696Q2ISGWEcjgjW3jF56A5GA=w1920-h876-iv1)
+![Lighthouse final results](https://raw.githubusercontent.com/jdfandino10/SimpleProgressiveApp/master/prueba_progressive_despues.PNG)
