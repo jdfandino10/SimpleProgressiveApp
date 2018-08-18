@@ -40,6 +40,7 @@
         }
         app.getSchedule(key, label);
         app.selectedTimetables.push({key: key, label: label});
+        app.saveSelectedTimetables();
         app.toggleAddDialog(false);
     });
 
@@ -116,7 +117,9 @@
         var request = new XMLHttpRequest();
         request.onreadystatechange = function () {
             if (request.readyState === XMLHttpRequest.DONE) {
+                console.log('request ready');
                 if (request.status === 200) {
+                    console.log('request 200');
                     var response = JSON.parse(request.response);
                     var result = {};
                     result.key = key;
@@ -124,6 +127,13 @@
                     result.created = response._metadata.date;
                     result.schedules = response.result.schedules;
                     app.updateTimetableCard(result);
+                } else {
+                  console.log('request not 200');
+                  // New request that isn't cached and there is no network
+                  var result = {};
+                  result.key = key;
+                  result.label = label;
+                  app.updateTimetableCard(result);
                 }
             } else {
                 // Return the initial weather forecast since no data is available.
@@ -168,7 +178,17 @@
 
     };
 
-
+    app.saveSelectedTimetables = function() {
+      var selectedTimetables = app.selectedTimetables;
+      localforage.setItem('selectedTimetables', selectedTimetables).then(function (value) {
+        // Do other things once the value has been saved.
+        console.log(value);
+        console.log('Saved!')
+      }).catch(function(err) {
+        // This code runs if there were any errors
+        console.log(err);
+      });
+    }
     /************************************************************************
      *
      * Code required to start the app
@@ -179,9 +199,33 @@
      *   Instead, check out IDB (https://www.npmjs.com/package/idb) or
      *   SimpleDB (https://gist.github.com/inexorabletash/c8069c042b734519680c)
      ************************************************************************/
+    localforage.getItem('selectedTimetables').then(function(value) {
+      // This code runs once the value has been loaded
+      // from the offline store.
+      console.log(value);
+      if (value) {
+        console.log('value existed, it isn\'t users first time');
+        app.selectedTimetables = value;
+        app.selectedTimetables.forEach(function(timetable) {
+          app.getSchedule(timetable.key, timetable.label);
+        });
+      } else {
+        console.log('value didn\'t exist, users first time');
+        // First time, show default values
+        app.getSchedule('metros/1/bastille/A', 'Bastille, Direction La Défense');
+        app.selectedTimetables = [
+            {key: initialStationTimetable.key, label: initialStationTimetable.label}
+        ];
+        app.saveSelectedTimetables();
+      }
+    }).catch(function(err) {
+      // This code runs if there were any errors
+      console.log(err);
+    });
 
-    app.getSchedule('metros/1/bastille/A', 'Bastille, Direction La Défense');
-    app.selectedTimetables = [
-        {key: initialStationTimetable.key, label: initialStationTimetable.label}
-    ];
+    // if ('serviceWorker' in navigator) {
+    //   navigator.serviceWorker
+    //            .register('./service-worker.js')
+    //            .then(function() { console.log('Service Worker Registered'); });
+    // }
 })();
