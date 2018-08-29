@@ -98,6 +98,7 @@
         }
 
         if (app.isLoading) {
+            window.cardLoadTime = performance.now();
             app.spinner.setAttribute('hidden', true);
             app.container.removeAttribute('hidden');
             app.isLoading = false;
@@ -117,6 +118,7 @@
         var request = new XMLHttpRequest();
         request.onreadystatechange = function () {
             if (request.readyState === XMLHttpRequest.DONE) {
+                if (!window.apiLoadTime) window.apiLoadTime = performance.now();
                 console.log('request ready');
                 if (request.status === 200) {
                     console.log('request 200');
